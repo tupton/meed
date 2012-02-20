@@ -11,7 +11,7 @@ class Collector
 
     update: (since, limit) ->
         winston.debug 'Updating Facebook items', { since: since, limit: limit }
-        token = getToken()
+        token = util.getFileContents(TOKEN_FILE)
         if token
             @_getItems token, since, limit, (items) =>
                 @store.addItems(@_processItems(items))
@@ -21,6 +21,10 @@ class Collector
         fetch = (offset) ->
             curr_limit = Math.min(50, limit-items.length)
             fb.apiCall 'GET', '/me/home', {access_token:token, offset:offset, limit:curr_limit}, (err, resp, body) =>
+                # If we don't get any data, we can't process anything
+                if !body.data
+                    return
+
                 items = items.concat(body.data)
                 if items.length >= limit or body.data.length == 0
                     cb(items)
@@ -69,6 +73,3 @@ class Collector
 
 exports.Collector = Collector
 
-exports.getToken = getToken = ->
-    if util.fileExists(TOKEN_FILE)
-        return fs.readFileSync(TOKEN_FILE, 'utf8')

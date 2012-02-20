@@ -12,8 +12,8 @@ class Collector
 
     update: (since, limit) ->
         winston.debug 'Updating Twitter items', { since: since, limit: limit }
-        token_file = getFileContents(TOKEN_FILE)
-        consumer_file = getFileContents(CONSUMER_FILE)
+        token_file = util.getFileContents(TOKEN_FILE)
+        consumer_file = util.getFileContents(CONSUMER_FILE)
         if token_file and consumer_file
             parts = token_file.split("\n")
             token = parts[0]
@@ -54,8 +54,4 @@ class Collector
 
 
 exports.Collector = Collector
-
-exports.getFileContents = getFileContents = (file_name) ->
-    if util.fileExists(file_name)
-        return fs.readFileSync(file_name, 'utf8')
 
