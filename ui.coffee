@@ -1,7 +1,7 @@
 reqwest = require('reqwest')
 domReady = require('domready')
 
-callApi = (url, cb, data) -> 
+callApi = (url, cb, data) ->
     reqwest({
         headers: {'Content-Type': 'application/json'},
         url: url,
