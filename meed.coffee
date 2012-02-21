@@ -41,4 +41,12 @@ app.put '/pos', (req, res) ->
     winston.info 'Saving position', { position: req.body }
     stored_pos = req.body
 
+app.get '/connect/:service', (req, res) ->
+    winston.info 'Request to connect service', { service_param: req.params.service }
+    # TODO
+    # Connector takes a service and associates it with the logged in user or creates a new user if a
+    # user isn't logged in.
+    # connector.connect req.params.service
+
 app.listen(3000)
+
